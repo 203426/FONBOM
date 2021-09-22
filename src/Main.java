@@ -10,48 +10,34 @@ public class Main {
         Scanner sc= new Scanner(System.in);
         int op;
         do{
-            System.out.println("1.Actualizar id alumno\n2.Actualizar ciudad de alumno\n3.Actualizar ciudad visitada\n4.Eliminar alumno por ciudad\n5.Eliminar alumno por id");
+            System.out.println("1.Agregar alumno\n2.Actualizar ciudad de alumno\n3.Actualizar ciudad visitada\n4.Eliminar alumno\n5.Actualizar id\n6.Visualizar tabla alumnos");
             System.out.println("opcion: ");
             op=sc.nextInt();
 
 
             switch (op) {
                 case 1:
-                    int id;
-                    String nombre;
 
-                    System.out.println("Ingrese el nuevo id: ");
-                    id=sc.nextInt();
-                    sc.nextLine();
-                    System.out.println("Ingrese el nombre del alumno a modificar: ");
-                    nombre=sc.nextLine();
-
-                    try {
-
-                        Connection conn= DriverManager.getConnection(url, user, pwd);
-                        Statement st= conn.createStatement();                                           
-                        String psql="UPDATE Alumno SET ID='"+id +"' WHERE NOMBRE='"+nombre+"'";                                                
-                        st.execute(psql);                                                                                                    
-                        conn.close();                                                                                                        
-                    }catch(SQLException e){                                                                                                  
-                        System.out.println(e.getMessage());                                                                                  
-                    }                                                                                                                        
-                                                                                                        
-                    break;
-
-                case 2:
-                    String ciudad;
-                    sc.nextLine();
-                    System.out.println("Ingrese la nueva ciudad: ");
-                    ciudad=sc.nextLine();
-
-                    System.out.println("Ingrese el nombre del alumno a modificar: ");
-                    nombre=sc.nextLine();
                     try {
 
                         Connection conn= DriverManager.getConnection(url, user, pwd);
                         Statement st= conn.createStatement();
-                        String psql="UPDATE Alumno SET CIUDADN='"+ ciudad +"' WHERE NOMBRE='"+nombre+"'";
+                        String psql="INSERT INTO Alumno(ID, NOMBRE, SEXO, EDAD,CIUDADN, CIUDADV)VALUES(203462, 'alfredo', 'masculino', 18, 'chiapas', '{cdmx, puebla}'),(203423, 'cesar', 'masculino', 18, 'chiapas', '{morelia, chiapas, cdmx}'),(203424, 'gabo', 'masculino', 18, 'edomex', '{chiapas, cdmx}'),(203426, 'steven', 'masculino', 18, 'chiapas', '{chiapas, cdmx}'),(203404, 'alejandro', 'masculino', 18, 'tabasco', '{tabasco, chiapas}')";
+                        st.execute(psql);
+                        conn.close();
+                    }catch(SQLException e){
+                        System.out.println(e.getMessage());
+                    }
+
+                    break;
+
+
+                case 2:
+                    try {
+
+                        Connection conn= DriverManager.getConnection(url, user, pwd);
+                        Statement st= conn.createStatement();
+                        String psql="UPDATE Alumno SET CIUDADN='CDMX' WHERE NOMBRE='steven'";
                         st.execute(psql);
                         conn.close();
                     }catch(SQLException e){
@@ -62,22 +48,10 @@ public class Main {
 
                     break;
                 case 3:
-
-                    int x;
-                    sc.nextLine();
-                    System.out.println("Ingrese la nueva ciudad: ");
-                    ciudad=sc.nextLine();
-
-                    System.out.println("Ingrese el nombre del alumno a modificar: ");
-                    nombre=sc.nextLine();
-                    System.out.println("Ingrese el numero en el arreglo a modificar: ");
-                    x=sc.nextInt();
-
                     try {
-
                         Connection conn= DriverManager.getConnection(url, user, pwd);
                         Statement st= conn.createStatement();
-                        String psql="UPDATE Alumno SET CIUDADV["+x+"] ='"+ciudad +"' WHERE NOMBRE='"+nombre+"'";
+                        String psql="UPDATE Alumno SET CIUDADV[1] ='tabasco' WHERE NOMBRE='steven'";
                         st.execute(psql);
                         conn.close();
                     }catch(SQLException e){
@@ -88,26 +62,50 @@ public class Main {
                     break;
                 case 4:
 
-                    System.out.println("Ingrese el nombre del alumno a modificar: ");
-                    nombre=sc.nextLine();
-
                     try {
 
                         Connection conn= DriverManager.getConnection(url, user, pwd);
                         Statement st= conn.createStatement();
-                        String psql="DELETE FROM ALUMNO WHERE ALUMNO.NOMBRE='"+nombre+"'";
+                        String psql="DELETE FROM ALUMNO WHERE ALUMNO.NOMBRE='steven'";
                         st.execute(psql);
                         conn.close();
                     }catch(SQLException e){
                         System.out.println(e.getMessage());
                     }
 
-                    break;                                    
+                    break;
 
+                case 5:
+                    try {
 
+                        Connection conn= DriverManager.getConnection(url, user, pwd);
+                        Statement st= conn.createStatement();
+                        String psql="UPDATE Alumno SET ID='123' WHERE NOMBRE='cesar'";
+                        st.execute(psql);
+                        conn.close();
+                    }catch(SQLException e){
+                        System.out.println(e.getMessage());
+                    }
 
+                    break;
+                case 6:
+                    try {
+
+                        Connection conn= DriverManager.getConnection(url, user, pwd);
+                        Statement st= conn.createStatement();
+                        String psql="Select * from alumno";
+                        ResultSet result= st.executeQuery(psql);
+                        while (result.next()){
+                            System.out.println(result.getString(1) );
+                        }
+                        conn.close();
+                    }catch(SQLException e){
+                        System.out.println(e.getMessage());
+                    }
+
+                    break;
             }
-        }while(op<=6);
+        }while(op<=7);
 
         sc.close();
     }
